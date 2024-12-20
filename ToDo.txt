@@ -17,9 +17,9 @@ George
 
 
 Brij
-- Get old computer working
-- Get ffmpeg installed correctly and added to system path
-- Get ffmpeg working with python
+- Get old computer working: Done   
+- Get ffmpeg installed correctly and added to system path: Done
+- Get ffmpeg working with python: Done
 - Set up GoPro connection between computer and gopro with a static IP
 - Rewrite GoPro check script accordingly
 - Write documentation for easy installation of GoPro
