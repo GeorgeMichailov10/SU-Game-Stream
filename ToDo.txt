@@ -1,0 +1,25 @@
+George
+- Get ffmpeg installed correctly and added to system path: Done
+- Get ffmpeg working with python
+- Download and install yolov7
+- Write test script to run yolov7 on webcam
+- Write documentation for easy installation of Yolov7
+- Check to see how Yolov7 identifies/locates balls and with what accuracy
+- Implement speed up techniques for Yolov7
+- Connect Yolov7 to GoPro
+- Document this connection
+- Determine if finetuning is necessary
+- Have a script ready for field testing with GoPro
+    - Measure the following:
+        - Accuracy and speed of ball detection and tracking.
+        - Distance of ball detection and tracking.
+
+
+
+Brij
+- Get old computer working
+- Get ffmpeg installed correctly and added to system path
+- Get ffmpeg working with python
+- Set up GoPro connection between computer and gopro with a static IP
+- Rewrite GoPro check script accordingly
+- Write documentation for easy installation of GoPro

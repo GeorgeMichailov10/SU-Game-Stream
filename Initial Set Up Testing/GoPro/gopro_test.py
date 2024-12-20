@@ -1,6 +1,5 @@
 from goprocam import GoProCamera, constants
 
-# Define GoPro IPs (replace with actual IPs)
 gopro_ips = ["10.5.5.9", "10.5.5.10"]
 
 gopros = [GoProCamera.GoPro(ip=ip) for ip in gopro_ips]
