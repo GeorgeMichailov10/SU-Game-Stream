@@ -1,10 +1,10 @@
 George
 - Get ffmpeg installed correctly and added to system path: Done
-- Get ffmpeg working with python
+- Get ffmpeg working with python: Done
 - Download and install yolov7
-- Write test script to run yolov7 on webcam
+- Write test script to run yolov7 on webcam: Done
 - Write documentation for easy installation of Yolov7
-- Check to see how Yolov7 identifies/locates balls and with what accuracy
+- Check to see how Yolov7 does from the webcam
 - Implement speed up techniques for Yolov7
 - Connect Yolov7 to GoPro
 - Document this connection
