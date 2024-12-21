@@ -2,8 +2,8 @@ George
 - Implement speed up techniques for Yolov7: In Progress
 - Connect Yolov7 to GoPro
 - Document this connection
-- Determine if finetuning is necessary
-- Have a script ready for field testing with GoPro
+- Determine if finetuning is necessary: In Progress (At the moment, it is not necessary)
+- Have a script ready for field testing with GoPro: Done
     - Measure the following:
         - Accuracy and speed of ball detection and tracking.
         - Distance of ball detection and tracking.

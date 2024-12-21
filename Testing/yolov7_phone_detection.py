@@ -9,9 +9,6 @@ YOLOV7_PATH = os.getenv("YOLOV7_PATH")
 if YOLOV7_PATH not in sys.path:
     sys.path.append(YOLOV7_PATH)
 
-# Verify the path setup
-print(f"YOLOv7 path added to sys.path: {YOLOV7_PATH}")
-
 # YOLOv7 Imports
 import cv2
 import torch
@@ -20,7 +17,6 @@ from utils.general import non_max_suppression, scale_coords
 from utils.plots import plot_one_box
 from utils.torch_utils import select_device
 import torch._dynamo
-
 
 torch.cuda.empty_cache()
 
@@ -35,6 +31,9 @@ model.eval()
 torch._dynamo.config.suppress_errors = True
 model = torch.compile(model, backend="eager")
 
+# Classes are here: https://github.com/WongKinYiu/yolov7/blob/main/data/coco.yaml
+PHONE_CLASS_ID = 67
+
 # Start Webcam
 cap = cv2.VideoCapture(0)
 
@@ -44,7 +43,7 @@ while True:
         break
 
     # Prepare the frame
-    img = cv2.resize(frame, (320, 320))
+    img = cv2.resize(frame, (640, 640))
     img = img[:, :, ::-1].transpose(2, 0, 1)
     img = img.astype('float32') / 255.0
     img = torch.from_numpy(img).unsqueeze(0).to(device)
@@ -53,7 +52,8 @@ while True:
     with torch.no_grad():
         with torch.autocast("cuda"):
             pred = model(img, augment=False)[0]
-    pred = non_max_suppression(pred, 0.25, 0.45, classes=None, agnostic=False)
+    # Filter detections for the specific class (cell phone)
+    pred = non_max_suppression(pred, 0.1, 0.45, classes=[PHONE_CLASS_ID], agnostic=False)
 
     # Process Results
     for det in pred:
@@ -61,8 +61,8 @@ while True:
             det[:, :4] = scale_coords(img.shape[2:], det[:, :4], frame.shape).round()
 
             for *xyxy, conf, cls in det:
-                label = f'{int(cls)} {conf:.2f}'
-                plot_one_box(xyxy, frame, label=label, color=(255, 0, 0), line_thickness=2)
+                label = f'Phone {conf:.2f}'  # Customize label for cell phone
+                plot_one_box(xyxy, frame, label=label, color=(0, 255, 0), line_thickness=2)
 
     # Display
     cv2.imshow("YOLOv7 Webcam", frame)
