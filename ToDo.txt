@@ -20,6 +20,12 @@ Brij
 - Get old computer working: Done   
 - Get ffmpeg installed correctly and added to system path: Done
 - Get ffmpeg working with python: Done
-- Set up GoPro connection between computer and gopro with a static IP
-- Rewrite GoPro check script accordingly
+- Set up GoPro connection between computer and gopro with a static IP: Done
+    SSID = GoPro_SU1
+    Password = cCq-Rc4-2Nk
+    IP = 10.5.5.100
+    Subnet Mask = 255.255.255.0
+    Gateway = 10.5.5.9
+- Rewrite GoPro check script accordingly: Done (Work in progress, need to figure out RTMP, camera is pinged)
 - Write documentation for easy installation of GoPro
+- Set up dev environment on old computer for easy testing and connection with GoPros
