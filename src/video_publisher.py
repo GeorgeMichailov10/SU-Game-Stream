@@ -5,7 +5,6 @@ import dotenv
 dotenv.load_dotenv()
 
 
-
 def start_ffmpeg_process(width=1280, height=720, fps=30, pix_fmt="bgr24", twitch_url=os.getenv("TWITCH_URL")):
     """
     Launches FFmpeg in such a way that it reads raw frames from stdin (pipe:0)
