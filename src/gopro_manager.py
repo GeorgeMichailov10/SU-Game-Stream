@@ -7,9 +7,8 @@ import time
 from typing import List
 import os
 import dotenv
-# from ball_tracking import BallTracker
-import sys
-import signal
+from ball_tracking import BallTracker
+
 
 dotenv.load_dotenv()
 
@@ -21,9 +20,10 @@ class GoProManager:
         self.active_camera_index = 0
         self.last_frame_buffers: List[np.ndarray] = [None] * len(self.cameras)
         self.active_stream_frame_buffer: np.ndarray = None
-        # self.ball_tracker = BallTracker()
+        self.ball_tracker = BallTracker()
         self.active_stream_lock = threading.Lock()
         self.last_frame_lock = threading.Lock()
+        self.frame_stutter = 10
         self.continue_stream = True
 
 
@@ -51,11 +51,12 @@ class GoProManager:
 
                 with self.active_stream_lock:
                     self.active_stream_frame_buffer = frame
-                if count % 5 == 0:
+                if count % self.frame_stutter == 0:
                     with self.last_frame_lock:
                         self.last_frame_buffers[self.active_camera_index] = frame
                 count += 1
 
+    # Debugger function
     def display_last_frame_buffer(self):
         while self.continue_stream:
             with self.last_frame_lock:
@@ -74,8 +75,9 @@ class GoProManager:
 
     # Thread 3: Control active camera.
     def active_camera_controller(self):
-        while True:
-            pass
+        while self.continue_stream:
+            with self.active_stream_lock:
+                last_frame = self.last_frame_buffers[self.active_camera_index]
 
     def kill_stream_controller(self):
         print("Stopping all streams...")

@@ -7,7 +7,7 @@ George
     - Measure the following:
         - Accuracy and speed of ball detection and tracking.
         - Distance of ball detection and tracking.
-
+- Note to self: Consider merit behind using only one camera stream buffer where active camera is processed every frame and the other cameras are processed every x frames.
 
 
 Brij
