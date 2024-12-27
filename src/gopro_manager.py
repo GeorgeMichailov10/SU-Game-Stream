@@ -86,15 +86,15 @@ class GoProManager:
             if len(last_frames) > 0:
                 detections = self.ball_tracker.locate_ball(last_frames)
                 if len(detections) > 0:
-                    for detection in detections:
-                        if len(detection) > 0:
-                            ball_detections = detection[0]
-                            ball_coordinates = ball_detections['coordinates']
-                            asyncio.run(self.print_quadrant(last_frames[0], ball_coordinates))
+                    coordinates = [
+                        [detection['coordinates'] for detection in detection_list if detection['coordinates'] is not None]
+                        for detection_list in detections
+                    ]
+                    if len(coordinates) > 0:
+                        asyncio.run(self.print_closest_camera(last_frames[0], coordinates))
             else:
                 print("Last frame is None.")
 
-    # Will be replaced with function that changes the active camera.
     async def print_closest_camera(self, frame, ball_coordinates):
         position = await closest_camera(frame, ball_coordinates)
         print(position)
