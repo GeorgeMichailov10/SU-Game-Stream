@@ -8,7 +8,7 @@ from typing import List
 import os
 import dotenv
 from ball_tracking import BallTracker
-from Algorithms.left_or_right import left_or_right
+from Algorithms.Algorithms import left_or_right, closest_camera
 
 
 dotenv.load_dotenv()
@@ -95,8 +95,8 @@ class GoProManager:
                 print("Last frame is None.")
 
     # Will be replaced with function that changes the active camera.
-    async def print_quadrant(self, frame, phone_coordinates):
-        position = await left_or_right(frame, phone_coordinates)
+    async def print_closest_camera(self, frame, ball_coordinates):
+        position = await closest_camera(frame, ball_coordinates)
         print(position)
 
     def kill_stream_controller(self):

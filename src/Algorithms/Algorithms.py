@@ -1,4 +1,5 @@
 import asyncio
+import numpy as np
 
 async def left_or_right(frame, coordinates):
     frame_horizontal_center = frame.shape[1] / 2
@@ -16,3 +17,15 @@ async def left_or_right(frame, coordinates):
     else:
         return 'bottom-right'
     
+async def closest_camera(frame, coordinates):
+    closest_camera_index = 0
+    closest_area = 0
+
+    for i in range(len(coordinates)):
+        for j in range(len(coordinates[i])):
+            area = (coordinates[i][j][2] - coordinates[i][j][0]) * (coordinates[i][j][3] - coordinates[i][j][1])
+            if area > closest_area:
+                closest_area = area
+                closest_camera_index = i
+
+    return closest_camera_index
