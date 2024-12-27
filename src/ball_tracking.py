@@ -35,6 +35,9 @@ class BallTracker:
     def locate_phone(self, frames: List[np.ndarray]) -> List[np.ndarray]:
         all_detections = []
         for frame in frames:
+            if frame is None:
+                print("Frame is None.")
+                continue
             # Preprocess the frame
             img = cv2.resize(frame, (self.length, self.width))  # Resize for YOLO input
             img = img[:, :, ::-1].transpose(2, 0, 1)  # Convert BGR to RGB and HWC to CHW
@@ -59,6 +62,7 @@ class BallTracker:
                             'confidence': float(conf),  # Confidence score
                         }
                         frame_detections.append(detection)
+                        print(detection)
 
             all_detections.append(frame_detections)
 

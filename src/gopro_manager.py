@@ -8,6 +8,7 @@ from typing import List
 import os
 import dotenv
 from ball_tracking import BallTracker
+from Algorithms.left_or_right import left_or_right
 
 
 dotenv.load_dotenv()
@@ -31,12 +32,12 @@ class GoProManager:
         self.stream_webcam_thread = threading.Thread(target=self.stream_webcam)
         self.display_last_frame_buffer_thread = threading.Thread(target=self.display_last_frame_buffer)
         # self.forward_active_stream_frame_buffer_thread = threading.Thread(target=self.forward_active_stream_frame_buffer)
-        # self.active_camera_controller_thread = threading.Thread(target=self.active_camera_controller)
+        self.active_camera_controller_thread = threading.Thread(target=self.active_camera_controller)
 
         self.stream_webcam_thread.start()
         self.display_last_frame_buffer_thread.start()
         # self.forward_active_stream_frame_buffer_thread.start()
-        # self.active_camera_controller_thread.start()
+        self.active_camera_controller_thread.start()
 
     # Thread 1: Accept video feed from webcam and store every x frames of active camera
     # in last_frame_buffers and active_stream_frame_buffer.
@@ -73,11 +74,30 @@ class GoProManager:
         while self.continue_stream:
             pass
 
-    # Thread 3: Control active camera.
+    # Thread 3: Continously loops to locate phone in each (and only one) frame in last_frame_buffers from ball_tracker and then
+    # calls left_or_right to determine if the phone is on the left or right side of the frame and prints the result.
     def active_camera_controller(self):
         while self.continue_stream:
-            with self.active_stream_lock:
-                last_frame = self.last_frame_buffers[self.active_camera_index]
+            last_frames: List[np.ndarray] = []
+            for i in range(len(self.last_frame_buffers)):
+                with self.camera_locks[i]:
+                    last_frames.append(self.last_frame_buffers[i])
+            
+            if len(last_frames) > 0:
+                detections = self.ball_tracker.locate_phone(last_frames)
+                if len(detections) > 0:
+                    for detection in detections:
+                        if len(detection) > 0:
+                            phone_detections = detection[0]
+                            phone_coordinates = phone_detections['coordinates']
+                            asyncio.run(self.print_quadrant(last_frames[0], phone_coordinates))
+            else:
+                print("Last frame is None.")
+
+    # Will be replaced with function that changes the active camera.
+    async def print_quadrant(self, frame, phone_coordinates):
+        position = await left_or_right(frame, phone_coordinates)
+        print(position)
 
     def kill_stream_controller(self):
         print("Stopping all streams...")
