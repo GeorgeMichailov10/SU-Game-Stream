@@ -1,7 +1,7 @@
 import subprocess
 import platform
-from goprocam import GoProCamera, constants
 import cv2
+from OpenGoPro import WirelessGoPro
 
 # List of static IPs for the GoPros
 gopro_ips = ["10.5.5.100", "10.5.5.101"]  # Replace with your GoPro IPs
@@ -16,14 +16,15 @@ def is_reachable(ip):
     except subprocess.CalledProcessError:
         return False
 
-# Initialize GoPro instances
+# Initialize GoPro instances using the OpenGoPro SDK
 gopros = []
 for ip in gopro_ips:
     if is_reachable(ip):
         try:
             print(f"Connecting to GoPro at {ip}...")
-            gopro = GoProCamera.GoPro(ip_address=ip)
-            gopros.append(gopro)
+            gopro = WirelessGoPro(ip)  # Create a GoPro instance using the OpenGoPro SDK
+            gopro.connect()  # Establish a connection
+            gopros.append((ip, gopro))
             print(f"Connected to GoPro at {ip}.")
         except Exception as e:
             print(f"Failed to connect to GoPro at {ip}: {e}")
@@ -32,29 +33,29 @@ for ip in gopro_ips:
 
 # Function to start recording on all reachable GoPros
 def start_recording():
-    for i, gopro in enumerate(gopros):
+    for ip, gopro in gopros:
         try:
-            print(f"Starting recording on GoPro {i + 1} ({gopro_ips[i]})...")
-            gopro.shoot_video()
-            print(f"GoPro {i + 1} is now recording!")
+            print(f"Starting recording on GoPro ({ip})...")
+            gopro.command("start")  # Send the start command
+            print(f"GoPro ({ip}) is now recording!")
         except Exception as e:
-            print(f"Failed to start recording on GoPro {i + 1}: {e}")
+            print(f"Failed to start recording on GoPro ({ip}): {e}")
 
 # Function to display live preview from each GoPro
 def live_preview():
-    for i, ip in enumerate(gopro_ips):
+    for ip, gopro in gopros:
         try:
-            print(f"Accessing live preview for GoPro {i + 1} ({ip})...")
-            stream_url = f"http://{ip}:8080/live"  # GoPro live stream URL
+            print(f"Accessing live preview for GoPro ({ip})...")
+            stream_url = f"http://{ip}:8080/live"  # Replace with actual stream URL if different
             cap = cv2.VideoCapture(stream_url)
 
             while True:
                 ret, frame = cap.read()
                 if not ret:
-                    print(f"Failed to retrieve frame from GoPro {i + 1}.")
+                    print(f"Failed to retrieve frame from GoPro ({ip}).")
                     break
                 
-                cv2.imshow(f"GoPro {i + 1} Live Feed", frame)
+                cv2.imshow(f"GoPro {ip} Live Feed", frame)
 
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
@@ -62,7 +63,7 @@ def live_preview():
             cap.release()
             cv2.destroyAllWindows()
         except Exception as e:
-            print(f"Error accessing live preview for GoPro {i + 1}: {e}")
+            print(f"Error accessing live preview for GoPro ({ip}): {e}")
 
 # Main function
 if __name__ == "__main__":

@@ -29,3 +29,13 @@ Brij
 - Rewrite GoPro check script accordingly: Done (Work in progress, need to figure out RTMP, camera is pinged)
 - Write documentation for easy installation of GoPro
 - Set up dev environment on old computer for easy testing and connection with GoPros
+
+
+
+- Retrieve all MAC addresses for GoPros
+- Set up GoPros for streaming (connects to hotspot)
+- Enter hotspot DHCP settings, assign static ips
+- Connect computer to hotspot
+- Use script with gopro sdk to establish connection and control streaming
+- Pull live stream from the script, integrate with algorithm
+- 
