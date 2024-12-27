@@ -62,7 +62,6 @@ class BallTracker:
                             'confidence': float(conf),  # Confidence score
                         }
                         frame_detections.append(detection)
-                        print(detection)
 
             all_detections.append(frame_detections)
 
