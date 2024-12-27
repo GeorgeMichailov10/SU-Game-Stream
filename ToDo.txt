@@ -1,13 +1,18 @@
 George
-- Implement speed up techniques for Yolov7: In Progress
+- Implement speed up techniques for Yolov7: Done
 - Connect Yolov7 to GoPro
 - Document this connection
-- Determine if finetuning is necessary. Answer is No: Done
 - Have a script ready for field testing with GoPro: Done
     - Measure the following:
         - Accuracy and speed of ball detection and tracking.
         - Distance of ball detection and tracking.
 - Note to self: Consider merit behind using only one camera stream buffer where active camera is processed every frame and the other cameras are processed every x frames.
+- Video Publisher creation
+    - Create ffmpeg attribute function
+    - Create twitch account
+    - Create a stream from video publisher that streams random rbg frames to twitch to make sure it works correctly.
+    - Create system for Video Publisher to grab frames from GoProManager and publish them to twitch.
+- Write function that switches active camera based on the position of the ball.
 
 
 Brij

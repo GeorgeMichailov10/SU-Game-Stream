@@ -5,5 +5,6 @@ George
 - Write test script to run yolov7 on webcam: Done
 - Write documentation for easy installation of Yolov7: Done
 - Check to see how Yolov7 does from the webcam: Done
+- Determine if finetuning is necessary. Answer is No: Done
 
 Brij
