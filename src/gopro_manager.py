@@ -84,13 +84,13 @@ class GoProManager:
                     last_frames.append(self.last_frame_buffers[i])
             
             if len(last_frames) > 0:
-                detections = self.ball_tracker.locate_phone(last_frames)
+                detections = self.ball_tracker.locate_ball(last_frames)
                 if len(detections) > 0:
                     for detection in detections:
                         if len(detection) > 0:
-                            phone_detections = detection[0]
-                            phone_coordinates = phone_detections['coordinates']
-                            asyncio.run(self.print_quadrant(last_frames[0], phone_coordinates))
+                            ball_detections = detection[0]
+                            ball_coordinates = ball_detections['coordinates']
+                            asyncio.run(self.print_quadrant(last_frames[0], ball_coordinates))
             else:
                 print("Last frame is None.")
 

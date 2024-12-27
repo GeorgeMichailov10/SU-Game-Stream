@@ -30,9 +30,9 @@ class BallTracker:
         self.model = torch.compile(self.model, backend="eager")
         self.length = 320
         self.width = 320
-        self.PHONE_CLASS_ID = 67
+        self.SPORTS_BALL_CLASS_ID = 67
 
-    def locate_phone(self, frames: List[np.ndarray]) -> List[np.ndarray]:
+    def locate_ball(self, frames: List[np.ndarray]) -> List[np.ndarray]:
         all_detections = []
         for frame in frames:
             if frame is None:
@@ -48,7 +48,7 @@ class BallTracker:
             with torch.no_grad():
                 with torch.autocast("cuda", enabled=torch.cuda.is_available()):  # Enable autocast for faster inference
                     pred = self.model(img, augment=False)[0]
-            pred = non_max_suppression(pred, 0.1, 0.45, classes=[self.PHONE_CLASS_ID], agnostic=False)
+            pred = non_max_suppression(pred, 0.1, 0.45, classes=[self.SPORTS_BALL_CLASS_ID], agnostic=False)
 
             # Collect results
             frame_detections = []
