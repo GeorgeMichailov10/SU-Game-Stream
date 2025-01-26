@@ -1,11 +1,32 @@
-from goprocam import GoProCamera, constants
+import cv2
 
-gopro_ips = ["10.5.5.9", "10.5.5.10"]
+# RTMP stream URL (replace with your actual RTMP URL)
+rtmp_url = "rtmp://192.168.1.100:1935/live/test>"
 
-gopros = [GoProCamera.GoPro(ip=ip) for ip in gopro_ips]
+# Open a connection to the RTMP stream
+cap = cv2.VideoCapture(rtmp_url)
 
-# Example: Start Recording on All GoPros
-for gopro in gopros:
-    gopro.shoot_video()
+if not cap.isOpened():
+    print("Error: Unable to open the RTMP stream.")
+    exit()
 
-print("All GoPros are recording!")
+print("RTMP stream opened successfully. Press 'q' to quit.")
+
+# Continuously grab frames and display them
+while True:
+    ret, frame = cap.read()
+    
+    if not ret:
+        print("Error: Unable to grab a frame from the stream.")
+        break
+
+    # Display the frame in a CV2 window
+    cv2.imshow("GoPro Stream", frame)
+
+    # Press 'q' to quit the stream viewer
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release the video capture object and close all OpenCV windows
+cap.release()
+cv2.destroyAllWindows()
